@@ -4,12 +4,12 @@ import matplotlib.pyplot as plt
 
 fig, ax = plt.subplots()
 
-df = pd.read_csv('~/Desktop/MicroBeatingRobot/MicroBeatingRobot/Data_csv/data_displacement.csv')
+df = pd.read_csv('~/Desktop/MicroBeatingRobot/MicroBeatingRobot/Databank/data_displacement.csv')
 
 
 ax.set_title("displacement")
 plt.plot(df.loc[1:,'step'], df.loc[1:,'displacement_x'], color = 'r', label = "x displacement")
 plt.plot(df.loc[1:,'step'], df.loc[1:,'displacement_y'], color = 'b', label = "y displacement")
 ax.legend(loc = 0)
-fig.savefig("data4.png")
-
+fig.savefig("data.png")
+plt.show()

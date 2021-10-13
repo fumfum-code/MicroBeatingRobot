@@ -4,9 +4,12 @@ import numpy as np
 numParticle = 4
 I           = np.eye(3)
 DT          = 0.001
-K           = 10
+#K           = 10
 roop        = 100000
-omega       = 0.3
+#omega       = 0.3
+
+beta        = 0.3
+alpha       = 1.0
 
 
 xb = np.array([0.0, 0.0, 0.0])

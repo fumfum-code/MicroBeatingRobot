@@ -38,7 +38,7 @@ class Particle():
 
  
         #print("vector norm : '\n'" , self.vector_norm)
-        print("vector unit : '\n'" , self.unit_vector)
+        #print("vector unit : '\n'" , self.unit_vector)
         print('\033[46m' + "arm length : " + '\033[0m' , c.arm_len)
 
                         
@@ -111,21 +111,20 @@ class Particle():
                 self.force_active[i]   += 0
 
 
-        print("force active :" , self.force_active)        
-        print("check force_active free :", np.sum(self.force_active,axis = 0))
+        #print("check force_active free :", np.sum(self.force_active,axis = 0))
 
 
     def get_force_passive(self,numParticle):
         self.force_passive = np.zeros((numParticle,3))
 
         for i in range(numParticle-1):
-            self.force_passive[i]     += -1*c.K*(self.vector_norm[i][i+1] - c.arm_len_init[i])*self.unit_vector[i][i+1]
-            self.force_passive[i+1]   += -1*c.K*(self.vector_norm[i][i+1] - c.arm_len_init[i])*self.unit_vector[i+1][i]
+            self.force_passive[i]     += -1*c.alpha*(self.vector_norm[i][i+1]/c.arm_len_init[i] - 1)*self.unit_vector[i][i+1]
+            self.force_passive[i+1]   += -1*c.alpha*(self.vector_norm[i][i+1]/c.arm_len_init[i] - 1)*self.unit_vector[i+1][i]
 
     def get_total_force(self, numParticle):
         self.force_total = np.zeros((numParticle,3))
         self.force_total = self.force_active + self.force_passive
-        print('\033[46m' + "force total :" + '\033[0m' + '\n', self.force_total)
+        #print('\033[46m' + "force total :" + '\033[0m' + '\n', self.force_total)
         print('\033[46m' + "check force free :" + '\033[0m',np.sum(self.force_total, axis = 0))
 
     def calculate_tensor(self, numParticle):
@@ -169,7 +168,7 @@ class Particle():
         fig, ax = plt.subplots()
         ax.set_xlim([-2,4])
         ax.set_ylim([-4,4])
-        ax.set_title("MicroRobot beating model in stokes flow torque:{0} and {1} ".format(c.torque[1],c.torque[2])) 
+        ax.set_title("MicroRobot beating model in stokes flow torque:{:.04f} and {:.04f} ".format(c.torque[1],c.torque[2])) 
         position = self.position.T
         plt.plot(position[0],position[1],zorder = 1)
         plt.scatter(position[0],position[1],zorder = 2, color = 'r')
@@ -181,5 +180,5 @@ class Particle():
         displacement = displacement.reshape(roop+1,3)
         df = pd.DataFrame(data = displacement, columns = ["displacement_x","displacement_y","displacement_z"])
         df['step'] = np.array(range(c.roop+1))            
-        df.to_csv('Data_csv/data_displacement.csv',index = False)
+        df.to_csv('Databank/data_displacement.csv',index = False)
         print(df)
