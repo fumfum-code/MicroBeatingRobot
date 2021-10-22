@@ -1,5 +1,7 @@
 import glob
 import cv2
+import constant as c
+
 
 img_array = []
 for filename in sorted(glob.glob("result/*.png")):
@@ -9,7 +11,7 @@ for filename in sorted(glob.glob("result/*.png")):
     img_array.append(img)
 
 clip_fps = 20.0
-name = 'result/result.mp4'
+name = 'Movie/result_k{}.mp4'.format(c.K_star)
 out = cv2.VideoWriter(name, cv2.VideoWriter_fourcc(*'MP4V'),clip_fps, size)
 
 for i in range(len(img_array)):

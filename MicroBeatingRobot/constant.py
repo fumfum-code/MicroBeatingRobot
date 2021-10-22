@@ -4,13 +4,14 @@ import numpy as np
 numParticle = 4
 I           = np.eye(3)
 DT          = 0.001
-#K           = 10
-roop        = 100000
+roop        = 20000
+
 #omega       = 0.3
+#K           = 10
 
 beta        = 0.3
-alpha       = 1.0
-
+K_star      = 5.0
+frec        = 0.02
 
 xb = np.array([0.0, 0.0, 0.0])
 xa = np.array([-1.0, -1.0, 0.0])
@@ -25,4 +26,5 @@ arm_len = np.array([1.0, 1.0 , 1.0])
 
 torque  = np.array([0.0, 1.0, 1.0, 0.0])
 
+torque_abs  = np.array([0.0, 1.0, 1.0, 0.0])
 

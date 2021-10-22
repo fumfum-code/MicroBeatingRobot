@@ -16,6 +16,9 @@ class Particle():
        self.iter = 0
        self.vector = np.zeros(((c.numParticle, c.numParticle, 3)))
        self.displacement = np.zeros(3)
+       self.dataset = []
+       self.data_arm = []
+       self.K_star = c.K_star
 
     def get_vector(self, numParticle):
         self.vector_norm = np.empty((numParticle, numParticle))
@@ -34,11 +37,7 @@ class Particle():
 
         for i in range(numParticle-1):
             c.arm_len[i] = self.vector_norm[i][i+1]
-
-
- 
-        #print("vector norm : '\n'" , self.vector_norm)
-        #print("vector unit : '\n'" , self.unit_vector)
+        self.data_arm.append(c.arm_len.copy())
         print('\033[46m' + "arm length : " + '\033[0m' , c.arm_len)
 
                         
@@ -118,8 +117,8 @@ class Particle():
         self.force_passive = np.zeros((numParticle,3))
 
         for i in range(numParticle-1):
-            self.force_passive[i]     += -1*c.alpha*(self.vector_norm[i][i+1]/c.arm_len_init[i] - 1)*self.unit_vector[i][i+1]
-            self.force_passive[i+1]   += -1*c.alpha*(self.vector_norm[i][i+1]/c.arm_len_init[i] - 1)*self.unit_vector[i+1][i]
+            self.force_passive[i]     += -1*self.K_star*(self.vector_norm[i][i+1]/c.arm_len_init[i] - 1)*self.unit_vector[i][i+1]
+            self.force_passive[i+1]   += -1*self.K_star*(self.vector_norm[i][i+1]/c.arm_len_init[i] - 1)*self.unit_vector[i+1][i]
 
     def get_total_force(self, numParticle):
         self.force_total = np.zeros((numParticle,3))
@@ -156,7 +155,7 @@ class Particle():
                 self.v[i] = np.sum(box, axis= 0)
 
 
-        self.position += self.v * c.DT
+        self.position += self.v * c.DT / c.frec
     
 
     def check_displacement(self, position):
@@ -180,5 +179,75 @@ class Particle():
         displacement = displacement.reshape(roop+1,3)
         df = pd.DataFrame(data = displacement, columns = ["displacement_x","displacement_y","displacement_z"])
         df['step'] = np.array(range(c.roop+1))            
-        df.to_csv('Databank/data_displacement.csv',index = False)
+        df.to_csv('Databank/data_displacement_k={}.csv'.format(c.K_star),index = False)
         print(df)
+
+
+    def angle_data(self,angle1,angle2):
+        
+        self.dataset.append(angle1)
+        self.dataset.append(angle2)
+ 
+    
+    def output_angle(self, roop, numParticle):
+        
+        array = np.array(self.dataset)
+        array = array.reshape(roop,numParticle-2)
+        print(array)
+        df = pd.DataFrame(data = array, columns = ["angle1","angle2"])
+                    
+        df['step'] = np.array(range(c.roop))            
+        df.to_csv('Databank/data_angle_k={}.csv'.format(c.K_star),index = False)
+        print(df)
+
+
+    def output_armlength(self, roop, numParticle):
+
+        array = np.array(self.data_arm)
+        array = array.reshape(roop, numParticle-1)
+        
+        print(array)
+
+        df = pd.DataFrame(data = array, columns = ["arm1","arm2", "arm3"])
+                    
+        df['step'] = np.array(range(roop))            
+        df.to_csv('Databank/data_arm_k={}.csv'.format(c.K_star),index = False)
+        print(df)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
