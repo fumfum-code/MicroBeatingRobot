@@ -4,7 +4,6 @@ import numpy as np
 from numpy import sin, cos ,pi
 
 import sys
-
 def main():
 
     angle1 = 90
@@ -16,6 +15,7 @@ def main():
         c.torque[1] = c.torque_abs[1]*sin(2 * pi  * time + pi/2)
         c.torque[2] = c.torque_abs[2]*sin(2 * pi  * time)
 
+       
         print('---now caluculating {} --- '.format(iter) )        
         if iter % 50 == 0: 
             particle.output(iter, angle2)
@@ -43,7 +43,6 @@ def main():
     particle.output_angle(c.roop, c.numParticle)
     particle.output_armlength(c.roop, c.numParticle)
 
-        
 
 
 if __name__ == "__main__":

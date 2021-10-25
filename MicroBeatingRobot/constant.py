@@ -10,7 +10,7 @@ roop        = 20000
 #K           = 10
 
 beta        = 0.3
-K_star      = 5.0
+K_star      = 10
 frec        = 0.02
 
 xb = np.array([0.0, 0.0, 0.0])
