@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import constant as c
+import particle_4 as c
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -38,7 +38,7 @@ class Particle():
         for i in range(numParticle-1):
             c.arm_len[i] = self.vector_norm[i][i+1]
         self.data_arm.append(c.arm_len.copy())
-        print('\033[46m' + "arm length : " + '\033[0m' , c.arm_len)
+        #print('\033[46m' + "arm length : " + '\033[0m' , c.arm_len)
 
                         
     def get_angle(self, u: np.ndarray, v : np.ndarray):
@@ -124,7 +124,7 @@ class Particle():
         self.force_total = np.zeros((numParticle,3))
         self.force_total = self.force_active + self.force_passive
         #print('\033[46m' + "force total :" + '\033[0m' + '\n', self.force_total)
-        print('\033[46m' + "check force free :" + '\033[0m',np.sum(self.force_total, axis = 0))
+        #print('\033[46m' + "check force free :" + '\033[0m',np.sum(self.force_total, axis = 0))
 
     def calculate_tensor(self, numParticle):
         
@@ -148,12 +148,11 @@ class Particle():
         for i in range(numParticle):
             for j in range(numParticle):
                 if i == j:
-                    box[j] = 0.0
+                    box[j] = 0#force[j] /(6 * pi *c.a_star)
                 else:
                     tmp = np.dot(self.ossen_tensor[i][j], force[j].T)
                     box[j] = tmp.T
                 self.v[i] = np.sum(box, axis= 0)
-
 
         self.position += self.v * c.DT / c.frec
     
@@ -165,7 +164,7 @@ class Particle():
 
     def output(self,iter, angle):
         fig, ax = plt.subplots()
-        ax.set_xlim([-2,4])
+        ax.set_xlim([-4,4])
         ax.set_ylim([-4,4])
         ax.set_title("MicroRobot beating model in stokes flow torque:{:.04f} and {:.04f} ".format(c.torque[1],c.torque[2])) 
         position = self.position.T
@@ -179,7 +178,7 @@ class Particle():
         displacement = displacement.reshape(roop+1,3)
         df = pd.DataFrame(data = displacement, columns = ["displacement_x","displacement_y","displacement_z"])
         df['step'] = np.array(range(c.roop+1))            
-        df.to_csv('Databank/data_displacement_k={}.csv'.format(c.K_star),index = False)
+        df.to_csv(f'Databank/data_displacement_K={c.K_star}_f={c.frec}.csv',index = False)
         print(df)
 
 
@@ -197,7 +196,7 @@ class Particle():
         df = pd.DataFrame(data = array, columns = ["angle1","angle2"])
                     
         df['step'] = np.array(range(c.roop))            
-        df.to_csv('Databank/data_angle_k={}.csv'.format(c.K_star),index = False)
+        df.to_csv(f'Databank/data_angle_k=_{c.K_star}_f={c.frec}.csv',index = False)
         print(df)
 
 
@@ -211,7 +210,7 @@ class Particle():
         df = pd.DataFrame(data = array, columns = ["arm1","arm2", "arm3"])
                     
         df['step'] = np.array(range(roop))            
-        df.to_csv('Databank/data_arm_k={}.csv'.format(c.K_star),index = False)
+        df.to_csv(f'Databank/data_arm_k={c.K_star}_f={c.frec}.csv',index = False)
         print(df)
 
 

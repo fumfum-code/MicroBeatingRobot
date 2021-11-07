@@ -1,23 +1,23 @@
 import modeling
-import constant as c
+import particle_4 as c
 import numpy as np 
 from numpy import sin, cos ,pi
-
+from tqdm import tqdm
 import sys
 def main():
 
     angle1 = 90
     angle2 = 90
     particle = modeling.Particle()
-    for iter in range(c.roop):
+    for iter in tqdm(range(c.roop)):
         time = c.DT * iter
         
         c.torque[1] = c.torque_abs[1]*sin(2 * pi  * time + pi/2)
         c.torque[2] = c.torque_abs[2]*sin(2 * pi  * time)
 
        
-        print('---now caluculating {} --- '.format(iter) )        
-        if iter % 50 == 0: 
+        #print('---now caluculating {} --- '.format(iter) )        
+        if iter % 500 == 0: 
             particle.output(iter, angle2)
        
         particle.check_displacement(c.position)
