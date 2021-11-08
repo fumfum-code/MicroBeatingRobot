@@ -17,7 +17,7 @@ def main():
 
        
         #print('---now caluculating {} --- '.format(iter) )        
-        if iter % 500 == 0: 
+        if iter % 50 == 0: 
             particle.output(iter, angle2)
        
         particle.check_displacement(c.position)

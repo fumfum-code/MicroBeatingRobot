@@ -4,14 +4,14 @@ import numpy as np
 numParticle = 4
 I           = np.eye(3)
 DT          = 0.001
-roop        = 100000
+roop        = 20000
 
 #omega       = 0.3
 #K           = 10
 
 beta        = 0.3
-K_star      = 10.0
-frec        = 0.02
+K_star      = 5.0
+frec        = 0.015
 a_star      = 1.0
 
 xb = np.array([0.0, 0.0, 0.0])
